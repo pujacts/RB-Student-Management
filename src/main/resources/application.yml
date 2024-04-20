@@ -1,0 +1,33 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /student-management
+
+spring:
+  application:
+    name: student-management
+  datasource:
+    url: jdbc:h2:mem:studentdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
+feecollection:
+  services:
+    host-url: http://localhost:8081/fee-collection
+    receipt-base-url: /api/receipts
+    fee-payment-url: /payment
+    receipt-details-url: /detail/
+    all-receipt-url: /all/receipt
+
+  springdoc:
+    swagger-ui:
+      path=/swagger-ui.html
+    api-docs:
+      path=/api-docs
