@@ -76,7 +76,6 @@ class StudentManagementHandlerTests {
     @Test
     void testUpdateStudent() {
         StudentRequestDto request = new StudentRequestDto();
-        request.setStudentId(1L);
         request.setStudentName("Jane Doe");
         request.setMobileNumber("9876543210");
         SchoolDto schoolDto = new SchoolDto();
@@ -94,7 +93,7 @@ class StudentManagementHandlerTests {
         given(studentRepository.findByStudentId(1L)).willReturn(Optional.of(student));
         given(studentRepository.save(any(Student.class))).willReturn(student);
 
-        StudentDto response = studentManagementHandler.updateStudent(request);
+        StudentDto response = studentManagementHandler.updateStudent(1l , request);
 
         assertEquals(1L, response.getStudentId());
     }

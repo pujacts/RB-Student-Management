@@ -10,7 +10,8 @@ public interface StudentManagementService {
 
     StudentDto deleteStudent(final Long studentId);
 
-    StudentDto updateStudent(final StudentRequestDto studentDetailRequest);
+    StudentDto updateStudent(final Long studentId ,
+                             final StudentRequestDto studentDetailRequest);
 
     List<StudentDto> getAllStudents(final String schoolname, final String grade);
 

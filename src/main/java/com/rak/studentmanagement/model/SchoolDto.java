@@ -6,7 +6,7 @@ public class SchoolDto {
 
     @Schema(description = "student grade")
     private String grade;
-    @Schema(description = "schoolname")
+    @Schema(description = "school name")
     private String schoolName;
 
     public String getSchoolName() {

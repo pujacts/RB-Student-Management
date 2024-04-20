@@ -29,7 +29,6 @@ public class StudentManagementHandler implements StudentManagementService {
 
     @Override
     public StudentDto createStudent(final StudentRequestDto studentDetailRequest) {
-        logger.info("Create Student of Student ID :: [{}] ", studentDetailRequest.getStudentId());
         Student student = new Student();
         student.setGrade(studentDetailRequest.getSchoolDetail().getGrade());
         student.setName(studentDetailRequest.getStudentName());
@@ -44,7 +43,7 @@ public class StudentManagementHandler implements StudentManagementService {
     public StudentDto deleteStudent(final Long studentId) {
         logger.info("Delete Student of Student ID :: [{}] ", studentId);
 
-        Student student = studentRepository.findByStudentId(studentId
+        final Student student = studentRepository.findByStudentId(studentId
         ).orElseThrow(() -> new StudentNotFoundException("Student not found for student ID " + studentId));
         studentRepository.deleteById(studentId);
         logger.info("Student deleted sucessfully :: [{}] ", studentId);
@@ -53,25 +52,26 @@ public class StudentManagementHandler implements StudentManagementService {
     }
 
     @Override
-    public StudentDto updateStudent(final StudentRequestDto studentDetailRequest) {
-        logger.info("Update Student of Student ID :: [{}] ", studentDetailRequest.getStudentId());
-        Student student = studentRepository.findByStudentId(studentDetailRequest.getStudentId()
-        ).orElseThrow(() -> new StudentNotFoundException("Student not found for student ID " + studentDetailRequest.getStudentId()));
+    public StudentDto updateStudent(final Long studentId ,
+                                    final StudentRequestDto studentDetailRequest) {
+        logger.info("Update Student of Student ID :: [{}] ", studentId);
+        final Student student = studentRepository.findByStudentId(studentId
+        ).orElseThrow(() -> new StudentNotFoundException("Student not found for student ID " + studentId));
 
 
         student.setGrade(studentDetailRequest.getSchoolDetail().getGrade());
         student.setName(studentDetailRequest.getStudentName());
         student.setMobileNumber(studentDetailRequest.getMobileNumber());
         student.setSchoolName(studentDetailRequest.getSchoolDetail().getSchoolName());
-        studentRepository.save(student);
+        Student updateStudent = studentRepository.save(student);
 
-        return toDto(student);
+        return toDto(updateStudent);
     }
 
     @Override
     public List<StudentDto> getAllStudents(final String schoolName, final String grade) {
         logger.info("Get All Student of School nam:: [{}] and Grade :: [{}] ", schoolName, grade);
-        List<Student> studentList = studentRepository.findBySchoolNameAndGrade(schoolName, grade);
+        final List<Student> studentList = studentRepository.findBySchoolNameAndGrade(schoolName, grade);
         return studentList.stream()
                 .map(StudentUtility::toDto)
                 .collect(Collectors.toList());
@@ -80,7 +80,6 @@ public class StudentManagementHandler implements StudentManagementService {
     @Override
     public StudentDto getStudentByIdAndSchool(final long studentId, final String schoolName) {
         logger.info("Get Student of Student ID :: [{}] and School :: [{}] ", studentId, schoolName);
-
         return studentRepository.findByStudentIdAndSchoolName(studentId, schoolName
         ).map(StudentUtility::toDto).orElseThrow(() -> new StudentNotFoundException("Student not found for student ID " + studentId));
 
