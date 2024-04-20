@@ -2,8 +2,8 @@ package com.rak.studentmanagement.service.impl;
 
 import com.rak.studentmanagement.config.FeeCollectionProperties;
 import com.rak.studentmanagement.exception.BusinessException;
-import com.rak.studentmanagement.model.PaymentRequest;
-import com.rak.studentmanagement.model.ReceiptResponse;
+import com.rak.studentmanagement.model.PaymentRequestDto;
+import com.rak.studentmanagement.model.ReceiptResponseDto;
 import com.rak.studentmanagement.service.FeeServiceClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,11 +16,13 @@ import static java.util.Collections.emptyList;
 
 @Service
 public class FeeServiceClientImpl implements FeeServiceClient {
+
     private static final Logger logger = LoggerFactory.getLogger(FeeServiceClientImpl.class);
+
     private final RestTemplate restTemplate;
     private final FeeCollectionProperties feeCollectionProperties;
 
-    private static final String SERVICE = "feeService";
+    private static final String CIRCUIT_BEAKER_NAME = "fetchReceiptDetails";
     private static final String FALLBACK_METHOD = "fetchReceiptDetailsFallback";
 
 
@@ -30,49 +32,43 @@ public class FeeServiceClientImpl implements FeeServiceClient {
     }
 
     @Override
-/*    @Retry(name = SERVICE)
-    @Bulkhead(name = SERVICE)
-    @CircuitBreaker(name = SERVICE, fallbackMethod = FALLBACK_METHOD)*/
-    public ReceiptResponse performFeePayment(final PaymentRequest paymentRequest) {
-        logger.info("Perform fee payment of Student ID :: [{}] ", paymentRequest.getStudentDetails().getStudentId());
+//    @Retryable(value = Exception.class, maxAttempts = 3, backoff = @Backoff(delay = 1000))
+//    @CircuitBreaker(name = CIRCUIT_BEAKER_NAME, fallbackMethod = FALLBACK_METHOD)
+    public ReceiptResponseDto performFeePayment(final PaymentRequestDto paymentRequest) {
+        logger.info("Perform fee payment of Student ID :: [{}] ", paymentRequest.getStudentDto().getStudentId());
         try {
-            ResponseEntity<ReceiptResponse> responseEntity = restTemplate.postForEntity(
+            ResponseEntity<ReceiptResponseDto> responseEntity = restTemplate.postForEntity(
                     feeCollectionProperties.getServices().get(HOST_URL) +
                             feeCollectionProperties.getServices().get(RECEIPT_BASE_URL) +
                             feeCollectionProperties.getServices().get(FEE_PAYMENT),
                     paymentRequest,
-                    ReceiptResponse.class
+                    ReceiptResponseDto.class
             );
             return responseEntity.getBody();
         } catch (Exception ex) {
             logger.error("Error creating tuition fee: {}", ex.getMessage());
-            throw new BusinessException(String.format("Failed to make tuition fee payment for Student ID [{}]", paymentRequest.getStudentDetails().getStudentId()));
+            throw new BusinessException(String.format("Failed to make tuition fee payment for Student ID [{}]", paymentRequest.getStudentDto().getStudentId()));
         }
     }
 
+//    @Retryable(value = Exception.class, maxAttempts = 3, backoff = @Backoff(delay = 1000))
+//    @CircuitBreaker(name = CIRCUIT_BEAKER_NAME, fallbackMethod = FALLBACK_METHOD)
     @Override
-/*    @Retry(name = SERVICE)
-    @Bulkhead(name = SERVICE)
-    @CircuitBreaker(name = SERVICE, fallbackMethod = FALLBACK_METHOD)*/
-    public ReceiptResponse fetchReceiptDetails(final Long studentId) {
+    public ReceiptResponseDto fetchReceiptDetails(final Long studentId) {
         logger.info("Fetch receipt details of Student ID :: [{}] ", studentId);
-        try {
-            ResponseEntity<ReceiptResponse> responseEntity = restTemplate.getForEntity(
-                    feeCollectionProperties.getServices().get(HOST_URL) +
-                            feeCollectionProperties.getServices().get(RECEIPT_BASE_URL) +
-                            feeCollectionProperties.getServices().get(RECEIPT_DETAILS) +
-                            studentId,
-                    ReceiptResponse.class
-            );
-            return responseEntity.getBody();
-        } catch (Exception ex) {
-            logger.error("Error fetching receipt details: {}", ex.getMessage());
-            throw new BusinessException(String.format("Failed to fetch Receipt Details for Student ID [{}]", studentId));
-        }
+        ResponseEntity<ReceiptResponseDto> responseEntity = restTemplate.getForEntity(
+                feeCollectionProperties.getServices().get(HOST_URL) +
+                        feeCollectionProperties.getServices().get(RECEIPT_BASE_URL) +
+                        feeCollectionProperties.getServices().get(RECEIPT_DETAILS) +
+                        studentId,
+                ReceiptResponseDto.class
+        );
+        return responseEntity.getBody();
+
     }
 
-    private ReceiptResponse fetchReceiptDetailsFallback(Throwable throwable) {
-        ReceiptResponse receiptResponse = new ReceiptResponse();
+    private ReceiptResponseDto fetchReceiptDetailsFallback(Throwable throwable) {
+        ReceiptResponseDto receiptResponse = new ReceiptResponseDto();
         receiptResponse.setReceiptDataList(emptyList());
         receiptResponse.setStatusCode(SERVICE_UNAVAILABLE_CODE);
         receiptResponse.setStatusMessage(SERVICE_UNAVAILABLE);

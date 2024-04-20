@@ -1,9 +1,11 @@
 package com.rak.studentmanagement.service;
 
-import com.rak.studentmanagement.model.PaymentRequest;
-import com.rak.studentmanagement.model.ReceiptResponse;
+import com.rak.studentmanagement.model.PaymentRequestDto;
+import com.rak.studentmanagement.model.ReceiptResponseDto;
+
 
 public interface FeeServiceClient {
-    ReceiptResponse performFeePayment(final PaymentRequest paymentRequest);
-    ReceiptResponse fetchReceiptDetails(final Long studentId);
+    ReceiptResponseDto performFeePayment(final PaymentRequestDto paymentRequest);
+
+    ReceiptResponseDto fetchReceiptDetails(final Long studentId);
 }

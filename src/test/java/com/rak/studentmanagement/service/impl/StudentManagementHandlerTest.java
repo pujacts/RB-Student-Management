@@ -1,9 +1,9 @@
 package com.rak.studentmanagement.service.impl;
 
 import com.rak.studentmanagement.entity.Student;
-import com.rak.studentmanagement.model.SchoolDetail;
-import com.rak.studentmanagement.model.StudentDetailRequest;
-import com.rak.studentmanagement.model.StudentResponse;
+import com.rak.studentmanagement.model.SchoolDto;
+import com.rak.studentmanagement.model.StudentDto;
+import com.rak.studentmanagement.model.StudentRequestDto;
 import com.rak.studentmanagement.repository.StudentRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,10 +30,10 @@ class StudentManagementHandlerTests {
 
     @Test
     void testCreateStudent() {
-        StudentDetailRequest request = new StudentDetailRequest();
+        StudentRequestDto request = new StudentRequestDto();
         request.setStudentName("John Doe");
         request.setMobileNumber("1234567890");
-        SchoolDetail schoolDetail = new SchoolDetail();
+        SchoolDto schoolDetail = new SchoolDto();
         schoolDetail.setSchoolName("ABC School");
         schoolDetail.setGrade("10");
         request.setSchoolDetail(schoolDetail);
@@ -47,13 +47,13 @@ class StudentManagementHandlerTests {
 
         given(studentRepository.save(any(Student.class))).willReturn(student);
 
-        StudentResponse response = studentManagementHandler.createStudent(request);
+        StudentDto response = studentManagementHandler.createStudent(request);
 
-        assertEquals(1, response.getStudentDetails().size());
-        assertEquals("John Doe", response.getStudentDetails().get(0).getStudentName());
-        assertEquals("1234567890", response.getStudentDetails().get(0).getMobileNumber());
-        assertEquals("ABC School", response.getStudentDetails().get(0).getSchoolName());
-        assertEquals("10", response.getStudentDetails().get(0).getGrade());
+        assertEquals(1L, response.getStudentId());
+        assertEquals("John Doe", response.getStudentName());
+        assertEquals("1234567890", response.getMobileNumber());
+        assertEquals("ABC School", response.getSchoolName());
+        assertEquals("10", response.getGrade());
     }
 
     @Test
@@ -67,22 +67,22 @@ class StudentManagementHandlerTests {
 
         given(studentRepository.findByStudentId(1L)).willReturn(Optional.of(student));
 
-        StudentResponse response = studentManagementHandler.deleteStudent(1L);
+        StudentDto response = studentManagementHandler.deleteStudent(1L);
 
-        assertEquals("SUCCESS", response.getStatusMessage());
-        assertEquals(204, response.getStatusCode());
+        assertEquals(1L, response.getStudentId());
+        assertEquals("John Doe", response.getStudentName());
     }
 
     @Test
     void testUpdateStudent() {
-        StudentDetailRequest request = new StudentDetailRequest();
+        StudentRequestDto request = new StudentRequestDto();
         request.setStudentId(1L);
         request.setStudentName("Jane Doe");
         request.setMobileNumber("9876543210");
-        SchoolDetail schoolDetail = new SchoolDetail();
-        schoolDetail.setSchoolName("XYZ School");
-        schoolDetail.setGrade("12");
-        request.setSchoolDetail(schoolDetail);
+        SchoolDto schoolDto = new SchoolDto();
+        schoolDto.setSchoolName("XYZ School");
+        schoolDto.setGrade("12");
+        request.setSchoolDetail(schoolDto);
 
         Student student = new Student();
         student.setStudentId(1L);
@@ -94,10 +94,9 @@ class StudentManagementHandlerTests {
         given(studentRepository.findByStudentId(1L)).willReturn(Optional.of(student));
         given(studentRepository.save(any(Student.class))).willReturn(student);
 
-        StudentResponse response = studentManagementHandler.updateStudent(request);
+        StudentDto response = studentManagementHandler.updateStudent(request);
 
-        assertEquals("SUCCESS", response.getStatusMessage());
-        assertEquals(200, response.getStatusCode());
+        assertEquals(1L, response.getStudentId());
     }
 
     @Test
@@ -112,11 +111,11 @@ class StudentManagementHandlerTests {
         List<Student> students = Collections.singletonList(student);
         given(studentRepository.findBySchoolNameAndGrade("ABC School", "10")).willReturn(students);
 
-        StudentResponse response = studentManagementHandler.getAllStudents("ABC School", "10");
+        List<StudentDto> response = studentManagementHandler.getAllStudents("ABC School", "10");
 
-        assertEquals(1, response.getStudentDetails().size());
-        assertEquals("ABC School", response.getStudentDetails().get(0).getSchoolName());
-        assertEquals("10", response.getStudentDetails().get(0).getGrade());
+        assertEquals(1, response.size());
+        assertEquals("ABC School", response.get(0).getSchoolName());
+        assertEquals("10", response.get(0).getGrade());
     }
 
     @Test
@@ -128,9 +127,9 @@ class StudentManagementHandlerTests {
 
         given(studentRepository.findByStudentIdAndSchoolName(1L, "ABC School")).willReturn(Optional.of(student));
 
-        StudentResponse studentResponse = studentManagementHandler.getStudentByIdAndSchool(1L, "ABC School");
+        StudentDto studentResponse = studentManagementHandler.getStudentByIdAndSchool(1L, "ABC School");
 
-        assertEquals("John Doe", studentResponse.getStudentDetails().get(0).getStudentName());
-        assertEquals("ABC School", studentResponse.getStudentDetails().get(0).getSchoolName());
+        assertEquals("John Doe", studentResponse.getStudentName());
+        assertEquals("ABC School", studentResponse.getSchoolName());
     }
 }

@@ -1,10 +1,10 @@
 package com.rak.studentmanagement.model;
 
-public class StudentDetailRequest {
+public class StudentRequestDto {
     private long studentId;
     private String studentName;
     private String mobileNumber;
-    private SchoolDetail schoolDetail;
+    private SchoolDto schoolDetail;
 
     public long getStudentId() {
         return studentId;
@@ -30,11 +30,11 @@ public class StudentDetailRequest {
         this.mobileNumber = mobileNumber;
     }
 
-    public SchoolDetail getSchoolDetail() {
+    public SchoolDto getSchoolDetail() {
         return schoolDetail;
     }
 
-    public void setSchoolDetail(SchoolDetail schoolDetail) {
+    public void setSchoolDetail(SchoolDto schoolDetail) {
         this.schoolDetail = schoolDetail;
     }
 }

@@ -2,28 +2,40 @@ package com.rak.studentmanagement.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.io.Serializable;
 import java.time.OffsetDateTime;
 
 @JsonRootName("receiptData")
-public class ReceiptData {
+@Schema(description = "Fee Receipt")
+public class FeeReceiptDto implements Serializable {
+
     @JsonProperty("Date & Time")
+    @Schema(description = "payment transaction date and time")
     private OffsetDateTime transactionDateAndTime;
 
     @JsonProperty("Student Name")
+    @Schema(description = "student name")
     private String studentName;
 
     @JsonProperty("Student Id")
+    @Schema(description = "student id")
     private Long studentId;
 
     @JsonProperty("Reference #")
-    private Long reference;
+    @Schema(description = "fee receipt reference id")
+    private Long referenceId;
 
     @JsonProperty("Card #")
+    @Schema(description = "card number")
     private String cardNumber;
 
     @JsonProperty("Card Type")
+    @Schema(description = "card type")
     private String cardType;
+
+    @Schema(description = "tansaction amount")
     private double transactionAmount;
 
     public OffsetDateTime getTransactionDateAndTime() {
@@ -50,12 +62,12 @@ public class ReceiptData {
         this.studentId = studentId;
     }
 
-    public Long getReference() {
-        return reference;
+    public Long getReferenceId() {
+        return referenceId;
     }
 
-    public void setReference(Long reference) {
-        this.reference = reference;
+    public void setReferenceId(Long referenceId) {
+        this.referenceId = referenceId;
     }
 
     public String getCardNumber() {

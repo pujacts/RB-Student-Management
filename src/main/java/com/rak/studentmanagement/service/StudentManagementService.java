@@ -1,12 +1,18 @@
 package com.rak.studentmanagement.service;
 
-import com.rak.studentmanagement.model.StudentDetailRequest;
-import com.rak.studentmanagement.model.StudentResponse;
+import com.rak.studentmanagement.model.StudentDto;
+import com.rak.studentmanagement.model.StudentRequestDto;
+
+import java.util.List;
 
 public interface StudentManagementService {
-    StudentResponse createStudent(final StudentDetailRequest studentDetailRequest);
-    StudentResponse deleteStudent(final Long studentId);
-    StudentResponse updateStudent(final StudentDetailRequest studentDetailRequest);
-    StudentResponse getAllStudents(final String school, final String grade);
-    StudentResponse getStudentByIdAndSchool(final long studentId, final String school);
+    StudentDto createStudent(final StudentRequestDto studentDetailRequest);
+
+    StudentDto deleteStudent(final Long studentId);
+
+    StudentDto updateStudent(final StudentRequestDto studentDetailRequest);
+
+    List<StudentDto> getAllStudents(final String schoolname, final String grade);
+
+    StudentDto getStudentByIdAndSchool(final long studentId, final String schoolName);
 }

@@ -1,12 +1,25 @@
 package com.rak.studentmanagement.model;
 
-public class StudentDetail {
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Pattern;
+
+@Schema(description = "Student Dto")
+public class StudentDto {
+    @Schema(description = "student id")
     private long studentId;
+    @Schema(description = "student name")
     private String studentName;
+    @Schema(description = "mobile number" , example = "+91 9907447760")
+    @Pattern(regexp = "^\\+[0-9]{2}\\s[0-9]{10}$", message = "Invalid mobile number format")
     private String mobileNumber;
-    private SchoolDetail schoolDetail;
+    @Schema(description = "school dto")
+    private SchoolDto schoolDto;
+    @Schema(description = "student grade")
     private String grade;
+    @Schema(description = "schoolname")
     private String schoolName;
+
+    @Schema(description = "payment transaction date and time")
     public long getStudentId() {
         return studentId;
     }
@@ -31,12 +44,12 @@ public class StudentDetail {
         this.mobileNumber = mobileNumber;
     }
 
-    public SchoolDetail getSchoolDetail() {
-        return schoolDetail;
+    public SchoolDto getSchoolDto() {
+        return schoolDto;
     }
 
-    public void setSchoolDetail(SchoolDetail schoolDetail) {
-        this.schoolDetail = schoolDetail;
+    public void setSchoolDetail(SchoolDto schoolDto) {
+        this.schoolDto = schoolDto;
     }
 
     public void setGrade(String grade) {

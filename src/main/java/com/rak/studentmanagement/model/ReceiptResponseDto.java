@@ -8,9 +8,9 @@ import java.util.List;
 
 @JsonInclude(content = JsonInclude.Include.NON_NULL)
 @JsonRootName("ReceiptResponse")
-public class ReceiptResponse {
+public class ReceiptResponseDto {
     @JsonProperty("receiptDataList")
-    private List<ReceiptData> receiptDataList;
+    private List<FeeReceiptDto> feeReceiptDtoList;
     @JsonProperty("purchaseDetailsResponse")
     private PurchaseDetailsResponse purchaseDetailsResponse;
     @JsonProperty("statusCode")
@@ -18,12 +18,12 @@ public class ReceiptResponse {
     @JsonProperty("statusMessage")
     private String statusMessage;
 
-    public List<ReceiptData> getReceiptDataList() {
-        return receiptDataList;
+    public List<FeeReceiptDto> getReceiptDataList() {
+        return feeReceiptDtoList;
     }
 
-    public void setReceiptDataList(List<ReceiptData> receiptDataList) {
-        this.receiptDataList = receiptDataList;
+    public void setReceiptDataList(List<FeeReceiptDto> feeReceiptDtoList) {
+        this.feeReceiptDtoList = feeReceiptDtoList;
     }
 
     public PurchaseDetailsResponse getPurchaseDetailsResponse() {

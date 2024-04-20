@@ -1,7 +1,7 @@
 package com.rak.studentmanagement.service.impl;
 
-import com.rak.studentmanagement.model.PaymentRequest;
-import com.rak.studentmanagement.model.ReceiptResponse;
+import com.rak.studentmanagement.model.PaymentRequestDto;
+import com.rak.studentmanagement.model.ReceiptResponseDto;
 import com.rak.studentmanagement.service.FeeServiceClient;
 import com.rak.studentmanagement.service.StudentService;
 import org.slf4j.Logger;
@@ -17,14 +17,15 @@ public class StudentServiceImpl implements StudentService {
     public StudentServiceImpl(FeeServiceClient feeServiceClient) {
         this.feeServiceClient = feeServiceClient;
     }
+
     @Override
-    public ReceiptResponse performFeePayment(final PaymentRequest paymentRequest) {
-        logger.info("Perform Fee Payment for Student ID :: [{}] ", paymentRequest.getStudentDetails().getStudentId());
+    public ReceiptResponseDto processFee(final PaymentRequestDto paymentRequest) {
+        logger.info("Perform Fee Payment for Student ID :: [{}] ", paymentRequest.getStudentDto().getStudentId());
         return feeServiceClient.performFeePayment(paymentRequest);
     }
 
     @Override
-    public ReceiptResponse getStudentReceiptDetails(final Long studentId) {
+    public ReceiptResponseDto getStudentReceiptDetails(final Long studentId) {
         logger.info("Get Student Receipt Details for Student ID :: [{}] ", studentId);
         return feeServiceClient.fetchReceiptDetails(studentId);
     }
