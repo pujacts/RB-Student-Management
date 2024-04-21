@@ -8,7 +8,7 @@
 
 ## Actuator
 
-- **Actuator Endpoint:** [http://localhost:9000/details](http://localhost:9000/details)
+- **Actuator Endpoint:** [http://localhost:9000/actuator](http://localhost:9000/actuator)
 
 ## Entity Info
 
