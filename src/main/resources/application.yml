@@ -38,16 +38,11 @@ management:
   server:
     port: 9000
   endpoints:
-    enabled-by-default: false
     web:
-      base-path: /details
+      base-path: /actuator
       exposure:
-        include: health, info, loggers
-    info:
-      enabled: true
+        include: health
     health:
-      enabled: true
-    loggers:
       enabled: true
 
 
