@@ -5,9 +5,14 @@ import com.rak.studentmanagement.exception.BusinessException;
 import com.rak.studentmanagement.model.PaymentRequestDto;
 import com.rak.studentmanagement.model.ReceiptResponseDto;
 import com.rak.studentmanagement.service.FeeServiceClient;
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -22,8 +27,9 @@ public class FeeServiceClientImpl implements FeeServiceClient {
     private final RestTemplate restTemplate;
     private final FeeCollectionProperties feeCollectionProperties;
 
-    private static final String CIRCUIT_BEAKER_NAME = "fetchReceiptDetails";
     private static final String FALLBACK_METHOD = "fetchReceiptDetailsFallback";
+
+    private static final String SERVICE = "feeService";
 
 
     public FeeServiceClientImpl(RestTemplate restTemplate, FeeCollectionProperties feeCollectionProperties) {
@@ -32,8 +38,10 @@ public class FeeServiceClientImpl implements FeeServiceClient {
     }
 
     @Override
-//    @Retryable(value = Exception.class, maxAttempts = 3, backoff = @Backoff(delay = 1000))
-//    @CircuitBreaker(name = CIRCUIT_BEAKER_NAME, fallbackMethod = FALLBACK_METHOD)
+    @Retry(name = SERVICE)
+    @Bulkhead(name = SERVICE)
+    @CircuitBreaker(name = SERVICE, fallbackMethod = FALLBACK_METHOD)
+    @Retryable(value = Exception.class, maxAttempts = 3, backoff = @Backoff(delay = 1000))
     public ReceiptResponseDto performFeePayment(final PaymentRequestDto paymentRequest) {
         logger.info("Perform fee payment of Student ID :: [{}] ", paymentRequest.getStudentDto().getStudentId());
         try {
@@ -51,8 +59,10 @@ public class FeeServiceClientImpl implements FeeServiceClient {
         }
     }
 
-//    @Retryable(value = Exception.class, maxAttempts = 3, backoff = @Backoff(delay = 1000))
-//    @CircuitBreaker(name = CIRCUIT_BEAKER_NAME, fallbackMethod = FALLBACK_METHOD)
+    @Retry(name = SERVICE)
+    @Bulkhead(name = SERVICE)
+    @CircuitBreaker(name = SERVICE, fallbackMethod = FALLBACK_METHOD)
+    @Retryable(value = Exception.class, maxAttempts = 3, backoff = @Backoff(delay = 1000))
     @Override
     public ReceiptResponseDto fetchReceiptDetails(final Long studentId) {
         logger.info("Fetch receipt details of Student ID :: [{}] ", studentId);
