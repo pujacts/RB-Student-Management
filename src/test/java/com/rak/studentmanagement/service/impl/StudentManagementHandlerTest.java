@@ -36,7 +36,7 @@ class StudentManagementHandlerTests {
         SchoolDto schoolDetail = new SchoolDto();
         schoolDetail.setSchoolName("ABC School");
         schoolDetail.setGrade("10");
-        request.setSchoolDetail(schoolDetail);
+        request.setSchoolDto(schoolDetail);
 
         Student student = new Student();
         student.setStudentId(1L);
@@ -81,7 +81,7 @@ class StudentManagementHandlerTests {
         SchoolDto schoolDto = new SchoolDto();
         schoolDto.setSchoolName("XYZ School");
         schoolDto.setGrade("12");
-        request.setSchoolDetail(schoolDto);
+        request.setSchoolDto(schoolDto);
 
         Student student = new Student();
         student.setStudentId(1L);

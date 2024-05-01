@@ -1,5 +1,6 @@
 package com.rak.studentmanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Pattern;
 
@@ -48,7 +49,7 @@ public class StudentDto {
         return schoolDto;
     }
 
-    public void setSchoolDetail(SchoolDto schoolDto) {
+    public void setSchoolDto(SchoolDto schoolDto) {
         this.schoolDto = schoolDto;
     }
 

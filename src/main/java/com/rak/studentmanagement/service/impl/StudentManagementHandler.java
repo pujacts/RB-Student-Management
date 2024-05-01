@@ -30,10 +30,10 @@ public class StudentManagementHandler implements StudentManagementService {
     @Override
     public StudentDto createStudent(final StudentRequestDto studentDetailRequest) {
         Student student = new Student();
-        student.setGrade(studentDetailRequest.getSchoolDetail().getGrade());
+        student.setGrade(studentDetailRequest.getSchoolDto().getGrade());
         student.setName(studentDetailRequest.getStudentName());
         student.setMobileNumber(studentDetailRequest.getMobileNumber());
-        student.setSchoolName(studentDetailRequest.getSchoolDetail().getSchoolName());
+        student.setSchoolName(studentDetailRequest.getSchoolDto().getSchoolName());
         Student createdStudent = studentRepository.save(student);
 
         return toDto(createdStudent);
@@ -59,10 +59,10 @@ public class StudentManagementHandler implements StudentManagementService {
         ).orElseThrow(() -> new StudentNotFoundException("Student not found for student ID " + studentId));
 
 
-        student.setGrade(studentDetailRequest.getSchoolDetail().getGrade());
+        student.setGrade(studentDetailRequest.getSchoolDto().getGrade());
         student.setName(studentDetailRequest.getStudentName());
         student.setMobileNumber(studentDetailRequest.getMobileNumber());
-        student.setSchoolName(studentDetailRequest.getSchoolDetail().getSchoolName());
+        student.setSchoolName(studentDetailRequest.getSchoolDto().getSchoolName());
         Student updateStudent = studentRepository.save(student);
 
         return toDto(updateStudent);

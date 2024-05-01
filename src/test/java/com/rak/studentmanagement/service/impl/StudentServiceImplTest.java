@@ -36,7 +36,7 @@ class StudentServiceImplTests {
         StudentDto studentDetails = new StudentDto();
         studentDetails.setStudentId(1l);
 
-        paymentRequestDto.setStudentDetails(studentDetails);
+        paymentRequestDto.setStudentDto(studentDetails);
 
         ReceiptResponseDto receiptResponse = new ReceiptResponseDto();
         receiptResponse.setStatusMessage("SUCCESS");

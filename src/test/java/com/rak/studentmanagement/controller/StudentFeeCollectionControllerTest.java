@@ -42,7 +42,7 @@ class StudentFeeCollectionControllerTests {
         StudentDto studentDetails = new StudentDto();
         studentDetails.setStudentId(1l);
 
-        paymentRequest.setStudentDetails(studentDetails);
+        paymentRequest.setStudentDto(studentDetails);
 
         ReceiptResponseDto receiptResponse = new ReceiptResponseDto();
 

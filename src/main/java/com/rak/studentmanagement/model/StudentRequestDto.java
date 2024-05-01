@@ -13,7 +13,7 @@ public class StudentRequestDto {
     private String mobileNumber;
 
     @Schema(description = "School Dto")
-    private SchoolDto schoolDetail;
+    private SchoolDto schoolDto;
 
     public String getStudentName() {
         return studentName;
@@ -31,11 +31,11 @@ public class StudentRequestDto {
         this.mobileNumber = mobileNumber;
     }
 
-    public SchoolDto getSchoolDetail() {
-        return schoolDetail;
+    public SchoolDto getSchoolDto() {
+        return schoolDto;
     }
 
-    public void setSchoolDetail(SchoolDto schoolDetail) {
-        this.schoolDetail = schoolDetail;
+    public void setSchoolDto(SchoolDto schoolDto) {
+        this.schoolDto = schoolDto;
     }
 }

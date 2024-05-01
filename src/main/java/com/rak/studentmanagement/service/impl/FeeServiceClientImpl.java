@@ -68,9 +68,8 @@ public class FeeServiceClientImpl implements FeeServiceClient {
         logger.info("Fetch receipt details of Student ID :: [{}] ", studentId);
         ResponseEntity<ReceiptResponseDto> responseEntity = restTemplate.getForEntity(
                 feeCollectionProperties.getServices().get(HOST_URL) +
-                        feeCollectionProperties.getServices().get(RECEIPT_BASE_URL) +
-                        feeCollectionProperties.getServices().get(RECEIPT_DETAILS) +
-                        studentId,
+                        feeCollectionProperties.getServices().get(RECEIPT_BASE_URL) + "/" +
+                        studentId + feeCollectionProperties.getServices().get(RECEIPT_DETAILS),
                 ReceiptResponseDto.class
         );
         return responseEntity.getBody();

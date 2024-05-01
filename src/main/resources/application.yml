@@ -6,6 +6,8 @@ server:
 spring:
   application:
     name: student-management
+  h2:
+    console.enabled: true
   datasource:
     url: jdbc:h2:mem:studentdb
     driver-class-name: org.h2.Driver
@@ -21,10 +23,10 @@ spring:
 feecollection:
   services:
     host-url: http://localhost:8081/fee-collection
-    receipt-base-url: /api/receipts
+    receipt-base-url: /api/fees
     fee-payment-url: /payment
-    receipt-details-url: /detail/
-    all-receipt-url: /all/receipt
+    receipt-details-url: /receipt
+    all-receipt-url: /receipts
 
   springdoc:
     swagger-ui:

@@ -13,7 +13,7 @@ public class PaymentRequestDto {
         return studentDto;
     }
 
-    public void setStudentDetails(StudentDto studentDto) {
+    public void setStudentDto(StudentDto studentDto) {
         this.studentDto = studentDto;
     }
 

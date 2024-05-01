@@ -13,7 +13,7 @@ public interface StudentManagementService {
     StudentDto updateStudent(final Long studentId ,
                              final StudentRequestDto studentDetailRequest);
 
-    List<StudentDto> getAllStudents(final String schoolname, final String grade);
+    List<StudentDto> getAllStudents(final String schoolName, final String grade);
 
     StudentDto getStudentByIdAndSchool(final long studentId, final String schoolName);
 }
